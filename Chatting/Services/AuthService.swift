@@ -9,9 +9,10 @@ import FirebaseAuth
 import FirebaseDatabase
 import RxFirebaseAuthentication
 import RxFirebaseDatabase
+import RxSwift
 
 protocol AuthService {
-    func register(email: String, password: String, name: String)
+    func register(email: String, password: String, name: String) -> Completable
     func login(email: String, password: String)
 }
 
@@ -23,12 +24,12 @@ final class AuthServiceImpl: AuthService {
         auth = Auth.auth()
     }
     
-    func register(email: String, password: String, name: String) {
-//        auth.rx.createUser(withEmail: email, password: password)
-            
+    func register(email: String, password: String, name: String) -> Completable {
+        auth.rx.createUser(withEmail: email, password: password) // TODO: Finding way to save name
+            .ignoreElements()
     }
     
     func login(email: String, password: String) {
-        
+        auth.rx.signIn(withEmail: email, password: password)
     }
 }
